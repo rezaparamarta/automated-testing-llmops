@@ -37,6 +37,27 @@ quiz_bank = """1. Subject: Leonardo DaVinci
    Facts:
     - The sun doesn't change color during sunset
     - Water slows the speed of light
+
+6. Subject: Rendang
+   Category: Food
+   Facts:
+    - Traditional Indonesian dish from West Sumatra
+    - Made from beef slow-cooked with coconut milk and spices
+    - Often considered one of the most delicious foods in the world
+
+7. Subject: Nasi Goreng
+   Category: Food
+   Facts:
+    - Indonesian fried rice dish
+    - Commonly served with egg and crackers
+    - Often cooked with sweet soy sauce (kecap manis)
+
+8. Subject: Sate
+   Category: Food
+   Facts:
+    - Skewered and grilled meat dish
+    - Served with peanut sauce
+    - Popular street food across Indonesia
 """
 
 system_message = f"""
@@ -46,6 +67,7 @@ Step 1:{delimiter} Identify the category:
 * Geography
 * Science
 * Art
+* Food
 
 Step 2:{delimiter} Determine subjects from the quiz bank.
 

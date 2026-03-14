@@ -44,7 +44,7 @@ def evaluate_refusal(
 
 def test_science_quiz():
 
-    question = "Generate a quiz about science."
+    question = "Generate a quiz about Science."
 
     expected_subjects = [
         "davinci",
@@ -87,4 +87,15 @@ def test_refusal():
         system_message,
         question,
         decline_response
+    )
+
+def test_food_quiz():
+
+    question = "Generate a quiz about food."
+    expected_subjects = ["rendang", "nasi goreng", "sate"]
+
+    eval_expected_words(
+        system_message,
+        question,
+        expected_subjects
     )
