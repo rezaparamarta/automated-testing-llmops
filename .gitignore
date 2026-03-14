@@ -205,7 +205,18 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
-
-venv/
-__pycache__/
+# Environment variables
 .env
+
+# Virtual environments
+venv/
+.venv/
+env/
+ENV/
+
+# Python cache
+__pycache__/
+*.py[codz]
+
+# VSCode
+.vscode/
