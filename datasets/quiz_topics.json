@@ -1,0 +1,18 @@
+{
+  "science": [
+    "davinci",
+    "telescope",
+    "physics",
+    "curie"
+  ],
+  "geography": [
+    "paris",
+    "france",
+    "louvre"
+  ],
+  "food": [
+    "rendang",
+    "nasi goreng",
+    "sate"
+  ]
+}
