@@ -1,5 +1,8 @@
+<<<<<<< HEAD
 ![Tests](https://github.com/rezaparamarta/automated-testing-llmops/actions/workflows/tests.yml/badge.svg)
 
+=======
+>>>>>>> 32c763fb8f1c19edd26990480da744566822c302
 # Automated Testing for LLMOps – AI Quiz Generator
 
 This project demonstrates how to build **automated evaluation pipelines for LLM-powered applications** using Python, LangChain, and Pytest.
