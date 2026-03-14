@@ -2,21 +2,22 @@
 
 ![CI](https://github.com/rezaparamarta/automated-testing-llmops/actions/workflows/tests.yml/badge.svg)
 
-This project demonstrates how to build **automated evaluation pipelines for LLM-powered applications** using **Python, LangChain, PyTest, and GitHub Actions**.
+This project demonstrates how to build **automated testing pipelines for LLM-powered applications** using **Python, LangChain, PyTest, and GitHub Actions**.
 
-The goal of this project is to explore how **software testing practices can be adapted for AI systems**, particularly applications powered by **Large Language Models (LLMs)**.
+The repository focuses on applying **software testing practices to AI systems**, particularly applications powered by **Large Language Models (LLMs)**.
 
-Unlike traditional software, LLM outputs are **non-deterministic**, meaning the same prompt may produce different responses. Because of this, AI systems require **specialized evaluation strategies**.
+Unlike traditional software, LLM outputs are **probabilistic and non-deterministic**, which means the same prompt can produce different responses.
+Because of this, AI systems require **specialized evaluation techniques**.
 
-This repository showcases how to implement **automated LLM evaluation pipelines**.
+This project implements multiple testing strategies commonly used in **LLMOps and AI reliability engineering**.
 
 ---
 
-# AI Quiz Generator Application
+# Project Overview
 
-This project implements an **AI-powered quiz generator**.
+The application in this project is an **AI-powered quiz generator**.
 
-The system uses a prompt template and a small knowledge base to generate quiz questions based on a requested topic.
+The system generates quizzes using a prompt template and a small knowledge base.
 
 Example prompt:
 
@@ -56,18 +57,18 @@ Generated Quiz
      ↓
 Evaluation Pipeline
      ↓
-Automated Tests (PyTest)
+PyTest Test Suite
      ↓
-CI/CD Validation (GitHub Actions)
+GitHub Actions CI/CD
 ```
 
-Every code change automatically triggers the evaluation pipeline.
+Every change to the repository automatically triggers the evaluation pipeline.
 
 ---
 
-## LLM Evaluation Pipeline
+# LLM Evaluation Pipeline
 
-The project implements a simplified **LLM testing pipeline** commonly used in AI production systems.
+This project implements several evaluation techniques used in **LLMOps pipelines**.
 
 ```
                 ┌──────────────┐
@@ -98,26 +99,31 @@ The project implements a simplified **LLM testing pipeline** commonly used in AI
         │                        │
         └───────────┬────────────┘
                     ▼
+             Hallucination Detection
+                    │
+                    ▼
+              Dataset Evaluations
+                    │
+                    ▼
              PyTest Test Suite
                     │
                     ▼
              GitHub Actions CI
 ```
 
-This architecture allows automated validation of LLM outputs on every code change.
+---
 
+# Testing Strategies Implemented
 
-# LLM Evaluation Strategies
-
-This project demonstrates **two common approaches used in LLMOps pipelines**.
+This project demonstrates **four levels of automated LLM evaluation**.
 
 ---
 
 ## 1. Rule-Based Evaluation
 
-Rule-based evaluation checks whether the LLM output contains expected keywords related to the topic.
+Validates that generated quizzes contain expected keywords related to the requested topic.
 
-Example test:
+Example:
 
 ```
 Generate a quiz about science
@@ -132,23 +138,19 @@ physics
 curie
 ```
 
-If the generated output does not include relevant topics, the test fails.
-
-This technique is commonly used to detect:
+This helps detect:
 
 * topic drift
-* hallucinations
-* incorrect context usage
+* incorrect prompt usage
+* off-topic responses
 
 ---
 
 ## 2. Model-Graded Evaluation (LLM-as-a-Judge)
 
-This project also implements **model-graded evaluation**.
+In this approach, another LLM evaluates whether the generated quiz follows the expected format.
 
-In this approach, another LLM evaluates whether the generated response follows the expected format.
-
-Example evaluation rule:
+Expected structure:
 
 ```
 Question 1: #### <question>
@@ -160,24 +162,71 @@ Evaluation output:
 
 ```
 Y → Valid quiz format
-N → Invalid format
+N → Invalid response
 ```
 
-This approach is widely used in **LLMOps pipelines for evaluating generative AI outputs**.
+This technique is widely used in **LLMOps evaluation pipelines**.
 
 ---
 
-# Automated Testing
+## 3. Dataset-Driven Evaluation
 
-The project uses **PyTest** to automate LLM evaluation.
+The system loads a dataset of expected quiz topics and automatically evaluates the generated output.
 
-Current test coverage includes:
+Example dataset:
+
+```
+datasets/quiz_topics.json
+```
+
+Example entry:
+
+```
+{
+  "science": ["davinci", "telescope", "physics"],
+  "food": ["rendang", "nasi goreng", "sate"]
+}
+```
+
+This enables **scalable automated testing across multiple prompts**.
+
+---
+
+## 4. Hallucination Detection
+
+LLMs sometimes generate facts that are not present in the original dataset.
+
+This project implements a **hallucination detection evaluator**.
+
+The evaluator checks whether the quiz only references facts contained in the quiz knowledge base.
+
+Example rule:
+
+```
+If a quiz contains facts not found in the question bank → FAIL
+```
+
+This technique helps detect:
+
+* hallucinated facts
+* fabricated information
+* unsafe AI outputs
+
+---
+
+# Automated Test Suite
+
+The repository currently includes **8 automated LLM tests**.
+
+Test coverage includes:
 
 * Science quiz generation
 * Geography quiz generation
 * Indonesian food quiz generation
 * Refusal behavior for unsupported topics
 * Model-graded evaluation
+* Dataset-driven testing
+* Hallucination detection
 
 Run tests locally:
 
@@ -187,19 +236,19 @@ pytest -v
 
 ---
 
-# CI/CD Pipeline
+# CI/CD with GitHub Actions
 
-The repository includes a **GitHub Actions CI pipeline**.
+The project includes a **GitHub Actions pipeline** that runs automated tests on every push.
 
-Every push triggers:
+Pipeline steps:
 
 ```
-1. Python environment setup
-2. Dependency installation
-3. LLM evaluation tests
+1. Setup Python environment
+2. Install dependencies
+3. Run PyTest LLM evaluation tests
 ```
 
-This ensures that prompt changes or code modifications **do not break expected LLM behavior**.
+This ensures that prompt or code changes **do not break expected LLM behavior**.
 
 ---
 
@@ -214,14 +263,26 @@ automated-testing-llmops
 ├── eval_model.py
 │   Model-graded evaluation logic
 │
+├── hallucination_eval.py
+│   Hallucination detection evaluator
+│
 ├── test_assistant.py
-│   Rule-based automated tests
+│   Rule-based evaluation tests
 │
 ├── test_release_evals.py
-│   Model-based evaluation tests
+│   Model-graded evaluation tests
+│
+├── test_dataset_evals.py
+│   Dataset-driven testing
+│
+├── test_hallucination_eval.py
+│   Hallucination detection tests
+│
+├── datasets
+│   ├── quiz_topics.json
+│   └── quiz_bank.txt
 │
 ├── requirements.txt
-│   Project dependencies
 │
 ├── .github/workflows/tests.yml
 │   GitHub Actions CI pipeline
@@ -251,36 +312,10 @@ Create a `.env` file:
 OPENAI_API_KEY=your_openai_api_key
 ```
 
-Run tests:
+Run the automated tests:
 
 ```
 pytest -v
-```
-
----
-
-# Example Knowledge Dataset
-
-The quiz generator uses a simple knowledge base.
-
-Example:
-
-```
-Subject: Leonardo Da Vinci
-Facts:
-- Painted the Mona Lisa
-- Studied anatomy and optics
-- Designed early flying machines
-```
-
-Example Indonesian food dataset:
-
-```
-Subject: Rendang
-Facts:
-- Traditional Indonesian dish from West Sumatra
-- Made with beef and coconut milk
-- Often considered one of the world's best foods
 ```
 
 ---
@@ -301,7 +336,9 @@ LLM systems:
 Input → Probabilistic Output
 ```
 
-This project demonstrates techniques used in **AI reliability engineering** and **LLMOps**.
+Because of this, AI systems require **evaluation pipelines instead of simple assertions**.
+
+This repository demonstrates techniques used in **AI reliability engineering and LLMOps**.
 
 Skills demonstrated in this project:
 
@@ -309,19 +346,9 @@ Skills demonstrated in this project:
 * LLM application development
 * Automated evaluation pipelines
 * Model-graded evaluation
+* Hallucination detection
+* Dataset-driven AI testing
 * CI/CD for AI systems
-
----
-
-# Future Improvements
-
-Potential improvements include:
-
-* Semantic evaluation instead of keyword matching
-* Dataset-driven testing
-* LLM output scoring systems
-* Prompt regression testing
-* LLM observability
 
 ---
 
@@ -334,7 +361,7 @@ QA Engineer interested in:
 * AI Testing
 * LLMOps
 * Automation Testing
-* AI Reliability
+* AI Reliability Engineering
 
-GitHub:
+GitHub
 https://github.com/rezaparamarta

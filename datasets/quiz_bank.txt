@@ -1,0 +1,27 @@
+Subject: Leonardo DaVinci
+Categories: Art, Science
+Facts:
+- Painted the Mona Lisa
+- Studied zoology, anatomy, geology, optics
+- Designed a flying machine
+
+Subject: Paris
+Categories: Art, Geography
+Facts:
+- Location of the Louvre
+- Capital of France
+- Most populous city in France
+- Radium and Polonium discovered by Marie and Pierre Curie
+
+Subject: Telescopes
+Category: Science
+Facts:
+- Device to observe objects
+- First refracting telescopes invented in Netherlands
+- James Webb telescope uses gold mirror
+
+Subject: Physics
+Category: Science
+Facts:
+- Water slows light
+- Eiffel Tower expands in summer
