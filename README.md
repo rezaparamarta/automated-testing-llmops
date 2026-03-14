@@ -4,25 +4,22 @@
 
 This project demonstrates how to build **automated testing pipelines for LLM-powered applications** using **Python, LangChain, PyTest, and GitHub Actions**.
 
-The repository focuses on applying **software testing practices to AI systems**, particularly applications powered by **Large Language Models (LLMs)**.
+The repository focuses on applying **software testing principles to AI systems**, particularly applications powered by **Large Language Models (LLMs)**.
 
-Unlike traditional software, LLM outputs are **probabilistic and non-deterministic**, which means the same prompt can produce different responses.
-Because of this, AI systems require **specialized evaluation techniques**.
+Unlike traditional software systems, LLMs produce **probabilistic outputs**, which makes testing more complex. Because of this, AI systems require **specialized evaluation pipelines** rather than simple deterministic assertions.
 
-This project implements multiple testing strategies commonly used in **LLMOps and AI reliability engineering**.
+This project implements **five layers of automated LLM evaluation** commonly used in modern **LLMOps and AI reliability engineering**.
 
 ---
 
 # Project Overview
 
-The application in this project is an **AI-powered quiz generator**.
+The sample application is an **AI-powered quiz generator** built using LangChain and OpenAI.
 
-The system generates quizzes using a prompt template and a small knowledge base.
-
-Example prompt:
+Example input:
 
 ```
-Generate a quiz about science.
+Generate a quiz about science
 ```
 
 Example output:
@@ -33,7 +30,7 @@ Question 2: True or False: Water slows the speed of light.
 Question 3: What is the largest telescope in space?
 ```
 
-Supported quiz topics include:
+Supported quiz categories include:
 
 * Science
 * Geography
@@ -44,7 +41,7 @@ Supported quiz topics include:
 
 # System Architecture
 
-The application follows a simple LLM pipeline.
+The application follows a modular LLM workflow.
 
 ```
 User Prompt
@@ -62,13 +59,15 @@ PyTest Test Suite
 GitHub Actions CI/CD
 ```
 
-Every change to the repository automatically triggers the evaluation pipeline.
+Every push to the repository automatically runs the **AI evaluation pipeline**.
 
 ---
 
-# LLM Evaluation Pipeline
+# 5-Layer LLM Evaluation Framework
 
-This project implements several evaluation techniques used in **LLMOps pipelines**.
+This project implements a **five-layer automated testing framework for LLM applications**.
+
+These layers simulate the types of evaluation systems used in real-world AI platforms.
 
 ```
                 ┌──────────────┐
@@ -94,36 +93,32 @@ This project implements several evaluation techniques used in **LLMOps pipelines
                     │
         ┌───────────┴────────────┐
         ▼                        ▼
- Rule-Based Tests        Model-Graded Evaluation
- (keyword validation)    (LLM-as-a-judge)
+ Rule-Based Evaluation    Model-Graded Evaluation
         │                        │
         └───────────┬────────────┘
                     ▼
-             Hallucination Detection
+          Dataset-Driven Evaluation
                     │
                     ▼
-              Dataset Evaluations
+          Hallucination Detection
+                    │
+                    ▼
+             Quality Scoring
                     │
                     ▼
              PyTest Test Suite
                     │
                     ▼
-             GitHub Actions CI
+            GitHub Actions CI/CD
 ```
 
 ---
 
-# Testing Strategies Implemented
+# Layer 1 — Rule-Based Evaluation
 
-This project demonstrates **four levels of automated LLM evaluation**.
+This layer validates that the generated quiz contains **expected keywords related to the requested topic**.
 
----
-
-## 1. Rule-Based Evaluation
-
-Validates that generated quizzes contain expected keywords related to the requested topic.
-
-Example:
+Example test:
 
 ```
 Generate a quiz about science
@@ -141,16 +136,16 @@ curie
 This helps detect:
 
 * topic drift
-* incorrect prompt usage
-* off-topic responses
+* prompt misalignment
+* irrelevant responses
 
 ---
 
-## 2. Model-Graded Evaluation (LLM-as-a-Judge)
+# Layer 2 — Model-Graded Evaluation
 
-In this approach, another LLM evaluates whether the generated quiz follows the expected format.
+A second LLM evaluates whether the quiz output **follows the correct structure**.
 
-Expected structure:
+Expected format:
 
 ```
 Question 1: #### <question>
@@ -165,68 +160,84 @@ Y → Valid quiz format
 N → Invalid response
 ```
 
-This technique is widely used in **LLMOps evaluation pipelines**.
+This approach is commonly called:
+
+**LLM-as-a-Judge**
 
 ---
 
-## 3. Dataset-Driven Evaluation
+# Layer 3 — Dataset-Driven Evaluation
 
-The system loads a dataset of expected quiz topics and automatically evaluates the generated output.
+The system evaluates LLM outputs using **multiple prompts from a dataset**.
 
-Example dataset:
-
-```
-datasets/quiz_topics.json
-```
-
-Example entry:
+Example dataset input:
 
 ```
-{
-  "science": ["davinci", "telescope", "physics"],
-  "food": ["rendang", "nasi goreng", "sate"]
-}
+"I'm trying to learn science, give me a quiz"
+"I'm a geography expert, quiz me"
+"Generate a quiz about Indonesian food"
 ```
 
-This enables **scalable automated testing across multiple prompts**.
+This allows scalable automated evaluation across many prompts.
 
 ---
 
-## 4. Hallucination Detection
+# Layer 4 — Hallucination Detection
 
-LLMs sometimes generate facts that are not present in the original dataset.
+LLMs sometimes generate **facts not present in the source dataset**.
 
-This project implements a **hallucination detection evaluator**.
-
-The evaluator checks whether the quiz only references facts contained in the quiz knowledge base.
+This layer checks whether quiz questions only reference facts from the **quiz knowledge base**.
 
 Example rule:
 
 ```
-If a quiz contains facts not found in the question bank → FAIL
+If a quiz contains facts not found in the quiz bank → FAIL
 ```
 
-This technique helps detect:
+This prevents:
 
-* hallucinated facts
 * fabricated information
-* unsafe AI outputs
+* hallucinated facts
+* unsafe educational content
+
+---
+
+# Layer 5 — Quality Scoring Evaluation
+
+This layer evaluates the **overall quality of the generated quiz**.
+
+The LLM grader assigns a score from **0 to 10** based on:
+
+* format correctness
+* topic relevance
+* clarity of questions
+* educational usefulness
+
+Example output:
+
+```
+Score: 8
+Explanation: The quiz follows the correct format and references valid facts from the dataset.
+```
+
+This mimics evaluation systems used in **real-world LLM platforms**.
 
 ---
 
 # Automated Test Suite
 
-The repository currently includes **8 automated LLM tests**.
+The repository currently contains **9 automated LLM tests**.
 
 Test coverage includes:
 
-* Science quiz generation
-* Geography quiz generation
+* science quiz generation
+* geography quiz generation
 * Indonesian food quiz generation
-* Refusal behavior for unsupported topics
-* Model-graded evaluation
-* Dataset-driven testing
-* Hallucination detection
+* refusal behavior
+* model-graded evaluation
+* dataset-driven testing
+* hallucination detection
+* AI quality scoring
 
 Run tests locally:
 
@@ -234,11 +245,17 @@ Run tests locally:
 pytest -v
 ```
 
+Example output:
+
+```
+9 passed
+```
+
 ---
 
-# CI/CD with GitHub Actions
+# CI/CD Pipeline
 
-The project includes a **GitHub Actions pipeline** that runs automated tests on every push.
+The project uses **GitHub Actions** to run automated evaluations on every push.
 
 Pipeline steps:
 
@@ -248,7 +265,7 @@ Pipeline steps:
 3. Run PyTest LLM evaluation tests
 ```
 
-This ensures that prompt or code changes **do not break expected LLM behavior**.
+This ensures that updates to prompts or code **do not degrade model output quality**.
 
 ---
 
@@ -258,41 +275,43 @@ This ensures that prompt or code changes **do not break expected LLM behavior**.
 automated-testing-llmops
 │
 ├── app.py
-│   Main LLM quiz generator
+│   LLM quiz generator
 │
 ├── eval_model.py
-│   Model-graded evaluation logic
+│   model-graded evaluation
 │
 ├── hallucination_eval.py
-│   Hallucination detection evaluator
+│   hallucination detection
+│
+├── quality_eval.py
+│   LLM quality scoring
 │
 ├── test_assistant.py
-│   Rule-based evaluation tests
+│   rule-based tests
 │
 ├── test_release_evals.py
-│   Model-graded evaluation tests
+│   model-graded tests
 │
 ├── test_dataset_evals.py
-│   Dataset-driven testing
+│   dataset testing
 │
 ├── test_hallucination_eval.py
-│   Hallucination detection tests
+│   hallucination tests
+│
+├── test_quality_eval.py
+│   quality scoring tests
 │
 ├── datasets
-│   ├── quiz_topics.json
 │   └── quiz_bank.txt
 │
 ├── requirements.txt
 │
-├── .github/workflows/tests.yml
-│   GitHub Actions CI pipeline
-│
-└── README.md
+└── .github/workflows/tests.yml
 ```
 
 ---
 
-# Running the Project Locally
+# Running the Project
 
 Clone the repository:
 
@@ -306,13 +325,13 @@ Install dependencies:
 pip install -r requirements.txt
 ```
 
-Create a `.env` file:
+Create `.env` file:
 
 ```
-OPENAI_API_KEY=your_openai_api_key
+OPENAI_API_KEY=your_api_key
 ```
 
-Run the automated tests:
+Run tests:
 
 ```
 pytest -v
@@ -320,48 +339,27 @@ pytest -v
 
 ---
 
-# Why This Project Matters
+# Skills Demonstrated
 
-Testing AI systems is fundamentally different from traditional software testing.
+This project demonstrates several advanced AI testing techniques:
 
-Traditional testing:
+* LLM Application Testing
+* Prompt Engineering Validation
+* Automated LLM Evaluation Pipelines
+* Model-Graded Evaluation (LLM-as-a-Judge)
+* Dataset-Driven Testing
+* Hallucination Detection
+* AI Output Quality Scoring
+* CI/CD for AI Systems
 
-```
-Input → Deterministic Output
-```
-
-LLM systems:
-
-```
-Input → Probabilistic Output
-```
-
-Because of this, AI systems require **evaluation pipelines instead of simple assertions**.
-
-This repository demonstrates techniques used in **AI reliability engineering and LLMOps**.
-
-Skills demonstrated in this project:
-
-* Prompt engineering
-* LLM application development
-* Automated evaluation pipelines
-* Model-graded evaluation
-* Hallucination detection
-* Dataset-driven AI testing
-* CI/CD for AI systems
+These techniques are commonly used in **LLMOps, AI reliability engineering, and AI testing frameworks**.
 
 ---
 
 # Author
 
 Reza Paramarta
-
-QA Engineer interested in:
-
-* AI Testing
-* LLMOps
-* Automation Testing
-* AI Reliability Engineering
+QA Engineer | AI Testing | LLMOps
 
 GitHub
 https://github.com/rezaparamarta
